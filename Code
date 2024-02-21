@@ -5,33 +5,58 @@
 
 using namespace std;
 
+// This function collects answers to a set of pre-defined questions.
 void collectResponses(vector<string>& responses) {
+    // Self-explanatory: a set of questions
     vector<string> questions = {"What is your name?", "How old are you?", "Where are you from?"};
 
-    for (const string& question : questions) {
-        cout << question << " ";
+    // Iterate through each question. Display them and then collect the answers.
+    for (int i = 0; i < questions.size(); i++) {
+        cout << questions[i] << " ";
+        
+        // Declare and receive an answer
         string answer;
         getline(cin, answer);
+
+        // Save the answer to the responses vector
         responses.push_back(answer);
     }
 }
 
+// Function to save responses to a CSV file
 void saveToCsv(const vector<string>& responses, const string& filename = "user_responses.csv") {
+    // Create an output file for writing in
+    // The use of ios:app is to append data to the end of an existing file instead of overwriting it
+    // This program can be ran multiple times and will keep appending to the same file
     ofstream file(filename, ios::app);
+    
+    // Check if the file is successfully opened
     if (file.is_open()) {
+        // Iterate over each response in the vector
         for (size_t i = 0; i < responses.size(); ++i) {
+            // Write the response to the file
             file << responses[i];
+            
+            // Add a comma if it's not the last response
             if (i != responses.size() - 1) {
                 file << ",";
             }
         }
+        
+        // Add a newline at the end of the line
         file << endl;
+        
+        // Close the file
         file.close();
+        
+        // Notify the user that responses are saved successfully
         cout << "Responses saved successfully!" << endl;
     } else {
+        // Notify the user if there was an error opening the file
         cerr << "Error: Unable to open file for writing." << endl;
     }
 }
+
 
 int main() {
     vector<string> userResponses;
@@ -39,4 +64,3 @@ int main() {
     saveToCsv(userResponses);
     return 0;
 }
-
