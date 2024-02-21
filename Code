@@ -1,1 +1,42 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+void collectResponses(vector<string>& responses) {
+    vector<string> questions = {"What is your name?", "How old are you?", "Where are you from?"};
+
+    for (const string& question : questions) {
+        cout << question << " ";
+        string answer;
+        getline(cin, answer);
+        responses.push_back(answer);
+    }
+}
+
+void saveToCsv(const vector<string>& responses, const string& filename = "user_responses.csv") {
+    ofstream file(filename, ios::app);
+    if (file.is_open()) {
+        for (size_t i = 0; i < responses.size(); ++i) {
+            file << responses[i];
+            if (i != responses.size() - 1) {
+                file << ",";
+            }
+        }
+        file << endl;
+        file.close();
+        cout << "Responses saved successfully!" << endl;
+    } else {
+        cerr << "Error: Unable to open file for writing." << endl;
+    }
+}
+
+int main() {
+    vector<string> userResponses;
+    collectResponses(userResponses);
+    saveToCsv(userResponses);
+    return 0;
+}
 
